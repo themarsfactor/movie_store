@@ -190,6 +190,9 @@
       <hr>
       <div class="row">
         <div class="form-group col-md-12">
+            <div class="col-md-6 mb-4 ml-0">
+            <input class="form-control" type="search" id="myInput" name="search" onkeyup="searchClient()" placeholder="search for products with last 's'">    
+              </div>
     <div class="col-md-6 m-auto">
     <button class="btn btn-dark btn-md" type="button" data-toggle='modal' data-target="#staticBackdrop">Create Movie</button>
 
@@ -267,6 +270,7 @@
 
         </div>
         
+        
       </div>
       
     </div>
@@ -330,6 +334,42 @@
   $("#staticBackdrop").on("hidden.bs.modal", function(){
               location.reload();
         })
+
+
+
+
+
+      function searchClient() {
+
+        //alert("yes");
+
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+          td = tr[i].getElementsByTagName("td")[0];
+
+          
+           if (td) {
+             txtValue = td.textContent || td.innerText;
+
+              txtValue =txtValue.slice(-1);
+
+                //console.log(txtValue);
+              if (txtValue ==="s") {
+
+
+            // if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              tr[i].style.display = "";
+            } else {
+              tr[i].style.display = "none";
+            }
+           //}
+        }
+          }
+      }
 </script>
 
 <script type="text/javascript">

@@ -140,7 +140,9 @@
       <h2>User List</h2>
       <hr>
       
-      
+    <div class="col-md-6 mb-4 ml-0">
+            <input class="form-control" type="search" id="myInput" name="search" onkeyup="searchClient()" placeholder="search for users with age above 50">    
+              </div>      
 
       
 
@@ -184,6 +186,38 @@
     $(document).ready( function () {
     $('#userTable').DataTable();
       })
+
+
+
+    function searchClient() {
+
+        //alert("yes");
+
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("userTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+          td = tr[i].getElementsByTagName("td")[2];
+
+          
+           if (td) {
+             txtValue = td.textContent || td.innerText;
+
+                //console.log(txtValue);
+              if (txtValue >= 50) {
+
+
+            // if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              tr[i].style.display = "";
+            } else {
+              tr[i].style.display = "none";
+            }
+           //}
+        }
+          }
+      }
   </script>
 
 

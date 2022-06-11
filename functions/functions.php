@@ -923,9 +923,12 @@ function payForMovie($movie_id, $user_id, $title, $price){
 
 function userPastPurcase($id){
 	require "../database/connection.php";
+	require "../includes/user_data.php";
+
+	$id = $_SESSION['id'];
 
 	$query = "SELECT `users`.*, `sales_table`.*  FROM `users` RIGHT JOIN `sales_table` ON 
-	`users`.id = `sales_table`.user_id";
+	`users`.id = `sales_table`.user_id WHERE `id` = '$id'";
 
 	$result = mysqli_query($__conn, $query);
 
