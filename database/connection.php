@@ -78,3 +78,38 @@ if ($__conn) {
  }
 
 
+
+
+
+
+
+if ($__conn) {
+ 	// code...
+
+ 	$sales_query = "CREATE TABLE IF NOT EXISTS sales_table(
+ 		sales_id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+ 		user_id VARCHAR (120) NOT NULL,
+ 		movie_id VARCHAR (120) NOT NULL,
+ 		title VARCHAR(60) NOT NULL,
+ 		price VARCHAR (60) NOT NULL,
+ 		date_sales_made TIMESTAMP NOT NULL
+
+ )";
+
+
+ 	$sales_query_result = mysqli_query($__conn, $sales_query);
+
+ 	if ($sales_query_result) {
+ 		// code...
+
+ 		//echo "success";
+
+
+ 	}
+ 	else{
+ 		mysqli_error($__conn);
+ 	}
+ }
+ else{
+ 	mysqli_error($__conn);
+ }

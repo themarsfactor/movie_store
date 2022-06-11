@@ -12,6 +12,7 @@
     <link rel="stylesheet" type="text/css" href="../thirdparties/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../css/admin.css">
     <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.0/css/jquery.dataTables.min.css">
 
    
 </head>
@@ -172,12 +173,18 @@
   <!-- page-content" -->
 </div>
 <script type="text/javascript" src="../thirdparties/jquery/jquery.min.js"></script>
+
+<script type="text/javascript" src="https://cdn.datatables.net/1.12.0/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="../thirdparties/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../js/admin.js"></script>
 <script type="text/javascript" src="../thirdparties/accounting/accounting.js"></script>
 
 
-  
+  <script type="text/javascript">
+    $(document).ready( function () {
+    $('#userTable').DataTable();
+      })
+  </script>
 
 
   

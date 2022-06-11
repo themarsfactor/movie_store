@@ -1,4 +1,12 @@
+<?php
+/**
+  * This Php function show the total number of movie in our database for admin
+ * */
+     require "../functions/functions.php";
 
+
+          getAllMovie();
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,6 +20,7 @@
     <link rel="stylesheet" type="text/css" href="../thirdparties/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../css/admin.css">
     <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.0/css/jquery.dataTables.min.css">
 
     <style type="text/css">
       #upload_file{
@@ -174,12 +183,23 @@
   <!-- sidebar-wrapper  -->
   <main class="page-content">
     <div class="container-fluid">
+      <div class="row">
       <h2>Administrator</h2>
+
+      </div>
       <hr>
       <div class="row">
         <div class="form-group col-md-12">
     <div class="col-md-6 m-auto">
     <button class="btn btn-dark btn-md" type="button" data-toggle='modal' data-target="#staticBackdrop">Create Movie</button>
+
+    <div class="row mt-5">
+      <div class="col-md-12">
+      <h3 class="col-md-10 mr-0">Total Movie purchased : <?php echo "{$_SESSION['movie']}";?></h3>
+      </div>
+    </div>
+
+    
 
           <!---The modal fired after the clicking create button -->
 
@@ -268,13 +288,9 @@
             <table class="table table-striped table-bordered table-sm" id="dataTable" width="100%" cellspacing="0">
 
               <?php
-              /**
-               * This Php function load all the movie in our database for admin
-               * */
-              require "../functions/functions.php";
 
-            
-                getMovie();
+              getMovie();
+
 
               ?>
 
@@ -297,6 +313,8 @@
   <!-- page-content" -->
 </div>
 <script type="text/javascript" src="../thirdparties/jquery/jquery.min.js"></script>
+
+<script type="text/javascript" src="https://cdn.datatables.net/1.12.0/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="../thirdparties/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../js/admin.js"></script>
 <script type="text/javascript" src="../thirdparties/accounting/accounting.js"></script>
@@ -304,6 +322,10 @@
     
 
 <script type="text/javascript">
+ $(document).ready( function () {
+    $('#myTable').DataTable();
+      })
+
   
   $("#staticBackdrop").on("hidden.bs.modal", function(){
               location.reload();

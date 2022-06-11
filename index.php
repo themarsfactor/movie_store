@@ -267,7 +267,7 @@
                         feedback = JSON.parse(feedback);
 
                         if(feedback.code == 204){
-                            location.href = "user";
+                            location.href = "movie";
 
                         //alert(feedback.message);
                     }else if (feedback.code == 403) {

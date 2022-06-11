@@ -15,6 +15,9 @@ if (isset($_POST['myUsername']) && isset($_POST['myEmail']) && isset($_POST['myP
 	$userId = null;
 	$birth_range = 2022;
 
+	// print_r($birth);
+	// die();
+
 	$age = $birth_range - $birth;
 
 

@@ -29,18 +29,23 @@ require "../includes/user_data.php";
 						<h2>My Profile</h2>
 
 
-						<?php getUser($id);
-
-
+						<?php $feedback = getUser($id);
+							$id = $feedback['data']['id'];
+							
+									// die();
 
 						?>
 						
 					</div>
-				<p>Name : <?php echo $name; ?></p>
-				<p>Email : <?php echo $email;?> </p>
-				<p>Date of birth : <?php echo $birth;?> </p>
+				<p>Name : <?php echo $feedback['data']['name']; ?></p>
+				<p>Email : <?php echo $feedback['data']['email'];?> </p>
+				<p>Date of birth : <?php echo $feedback['data']['birth'];?> </p>
 
-				<p class="m-auto mt-3" onclick="editUser('<?php echo $id?>')"><button class="btn btn-primary btn-md">Edit profile</button></p>
+				<p class="m-auto mt-3" onclick="editUser('<?php echo $id?>')"><button class="btn btn-primary btn-md">Edit profile</button>
+					<button class="btn btn-info btn-md mx-3"><a class="text-light"
+					 href="../movie-purchased?id=<?php echo $id; ?>"> View Movie Purchased </a>
+					</button>
+				</p>
 
 				</div>
 			</div>
@@ -99,19 +104,20 @@ require "../includes/user_data.php";
                value ="${feedback['data']['email']}" id = 'new_email'>
             </div>
 
-
             <div class="form-group">
-              <label>Password</label><br>
-              <span id="showformat"></span>
-              <input type="password" name="password" class="form-control" id="new_password" 
-              value = "${feedback['data']['password']}">
+              <label>Email</label>
+              <input type="date" name="birth" class="form-control"
+               value ="${feedback['data']['birth']}" id = 'new_birth'>
             </div>
 
-            
+
+                        
             
             <div class="modal-footer">
         
         <button type='button' onclick = updateEditUser('${feedback['data']['id']}') class="btn btn-primary">Update</button>
+
+
       </div>
             
           </form>
@@ -148,17 +154,17 @@ $("#pageOpen2").html(staticBackdrop);
 	function updateEditUser(id){
 		let new_name = document.querySelector("#new_name").value.trim();
 		let email = document.querySelector("#new_email").value.trim();
-		let new_password = document.querySelector("#new_password").value.trim();
+		let new_birth = document.querySelector("#new_birth").value.trim();
 
 
 
-		if (new_name.length == 0 || email.length == 0 || new_password.length == 0) {
+		if (new_name.length == 0 || email.length == 0 || new_birth.length == 0) {
 			alert("Fill the input field/fields");
 		}else{
 			$.post({
 
 				url : "../_loaders/updatedData.php",
-				data : {id : id, name : new_name, email : email, password : new_password},
+				data : {id : id, name : new_name, email : email, birth : new_birth},
 				success : function(feedback){
 
 					

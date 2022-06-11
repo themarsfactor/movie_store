@@ -437,11 +437,12 @@ function getUser($user_id){
 		if (mysqli_num_rows($result) ==1) {
 
 
-		$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+		$_SESSION['row'] = mysqli_fetch_array($result, MYSQLI_ASSOC);
+		 
 
 		return [
 			"message" => 'user data',
-			'data' => $row,
+			'data' => $_SESSION['row'],
 			'code' => 201
 
 
@@ -474,11 +475,11 @@ function getUser($user_id){
  * Function that update user data and save back to the database
  * */
 
-function updateMyData($id, $new_name, $new_email, $new_password){
+function updateMyData($id, $new_name, $new_email, $new_birth){
 	require "../database/connection.php";
 
 	$query = "UPDATE `users` SET `name` = '$new_name', `email` = '$new_email',
-	 `password` = '$new_password' WHERE `id` = '$id' LIMIT 1";
+	 `birth` = '$new_birth' WHERE `id` = '$id' LIMIT 1";
 
 	 $result = mysqli_query($__conn, $query);
 
@@ -525,7 +526,7 @@ function getMovie(){
 
 	if ($result) {
 
-		echo "<table class='table'>
+		echo "<table class='table' id='myTable'>
 				<thead>
 					<tr>
 						<th>Title</th>
@@ -724,7 +725,7 @@ function setUpdate($id, $genre2, $title2, $production2, $price2){
 
    	if ($result) {
 
-   		echo "<table class='table'>
+   		echo "<table class='table' id='userTable'>
    				<thead>
    					<tr>
    						<th>Name</th>
@@ -762,3 +763,254 @@ function setUpdate($id, $genre2, $title2, $production2, $price2){
    		echo mysqli_error($__conn);
    	}
    }
+
+
+
+
+
+
+/**
+ * Function that display movie for sales
+ * 
+ * */
+
+
+
+function showMovie(){
+	require "../database/connection.php";
+
+	$query = "SELECT * FROM `movies_table`";
+	$result = mysqli_query($__conn, $query);
+
+	if ($result) {
+
+		echo "<div class='row'>";
+
+			while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+				// code...
+				$id = $row['movie_id'];
+				$title = $row['title'];
+				$genre = $row['genre'];
+				$price = $row['price'];
+				$r_date = $row['production'];
+				$img_path = $row['img_path'];
+
+
+				echo "<div class='col-md-4'>
+          <div class='card mb-4 shadow-sm'>
+            <img src='../_loaders/$img_path' width=100% height=50%>
+
+            <div class='card-head m-auto'>
+              <p>
+                <span>$title</span>
+              </p>
+              
+            </div>
+            <div class='card-body'>
+              <p class='card-text'>$genre</p>
+              <div class='d-flex justify-content-between align-items-center'>
+                <div class='btn-group'>
+                  <button type='button' class='btn btn-md btn-outline-secondary' onclick=payMovieModal('{$id}')>
+                  View Details/Buy</button>
+                </div>
+                <small class='text-muted'>$$price</small>
+              </div>
+            </div>
+          </div>
+        </div>";
+			}
+
+
+				echo "</div>";
+
+		// code...
+	}else{
+		echo mysqli_error($__conn);
+	}
+}
+
+
+
+
+/**
+ * Function that retrieved data for payment purpose
+ * */
+
+
+	function payMovieData($id){
+		require "../database/connection.php";
+
+
+		$query = "SELECT * FROM `movies_table` WHERE `movie_id` = '$id' LIMIT 1";
+		$result = mysqli_query($__conn, $query);
+
+		if ($result) {
+
+			if (mysqli_num_rows($result) == 1) {
+				// code...
+				$data = mysqli_fetch_array($result, MYSQLI_ASSOC);
+
+				return [
+
+						"message" => 'reetrieve data',
+						"data" => $data,
+						"code" => 201
+
+						];
+			}else{
+				//no match with anyone
+				return [
+							"message" => 'not retrieved',
+							"data" => null,
+							"code" => 404
+
+						];
+			}
+			// code...
+		}else{
+			//query not match
+			return mysqli_error($__conn);
+		}
+	}
+
+
+
+
+/**
+ * Function that pay for the movie
+ * */
+
+function payForMovie($movie_id, $user_id, $title, $price){
+	require "../database/connection.php";
+	require "../includes/user_data.php";
+	$user_id = $_SESSION['id'];
+
+
+	$query = "INSERT INTO `sales_table` (`user_id`, `movie_id`, `title`, `price`, 
+		`date_sales_made`) VALUES
+	 ('$user_id', '$movie_id', '$title', '$price', NOW())";
+
+	 $result = mysqli_query($__conn, $query);
+
+	 if ($result) {
+
+	 	return [
+	 						"message" => 'payment successful',
+	 						"code" => 201
+
+	 						];
+	 	// code...
+	 }else{
+
+	 	
+	 	return [
+	 						"message" => 'payment failed',
+	 						"code" => 404
+
+	 						];
+	 }
+		//$query = " "
+
+
+}
+
+
+
+
+/**
+ * Function that get past purchase for users
+ * */
+
+function userPastPurcase($id){
+	require "../database/connection.php";
+
+	$query = "SELECT `users`.*, `sales_table`.*  FROM `users` RIGHT JOIN `sales_table` ON 
+	`users`.id = `sales_table`.user_id";
+
+	$result = mysqli_query($__conn, $query);
+
+
+	if ($result) {
+
+			echo "<table class = 'table'>
+							<thead>
+								<tr>
+									<th> Name of the Movie</th>
+									<th> Price</th>
+									<th> Date Purchased</th>
+
+								</tr>
+
+							</thead>
+							<tbody>";
+		// code...
+
+		while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+
+
+			$title = $row['title'];
+			$price = $row['price'];
+			$date_purchased = $row['date_sales_made'];
+
+
+
+			echo "<tr>
+							<td>{$title}</td>
+							<td>{$price}</td>
+							<td>{$date_purchased}</td>
+
+
+						</tr>";
+			// code...
+
+
+		}
+
+
+		echo "</tbody></table>";
+
+
+
+	}else{
+		echo mysqli_error($__conn);
+	}
+}
+
+
+
+
+
+
+/**
+ * Function that dispaly number of movie purchased
+ ***/
+
+ function getAllMovie(){
+ 	require "../database/connection.php";
+
+ 	$query = "SELECT * FROM `sales_table`";
+ 	$result = mysqli_query($__conn, $query);
+
+ 	if ($result) {
+
+ 		$_SESSION['movie'] = mysqli_affected_rows($__conn);
+
+
+
+ 		return [
+
+					'message' => 'Number of movie sold',
+					'data' => $_SESSION['movie']
+ 							];
+ 		// code...
+ 	}else{
+
+
+ 		return [
+
+					'message' => mysqli_error($__conn),
+					'data' => null 
+ 							];
+ 	}
+ } 
+ 
