@@ -544,7 +544,7 @@ function submitUpdate(id){
         url : "../_loaders/delete_movie.php",
         data : {id : id},
         success : function(feedback){
-          //feedback = JSON.parse(feedback);
+          feedback = JSON.parse(feedback);
 
           console.log(feedback);
 
