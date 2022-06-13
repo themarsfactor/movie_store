@@ -533,7 +533,7 @@ function submitUpdate(id){
 
     function deleteMovie(id){
 
-      const res = confirm("Do you want to delete the product?");
+      const res = confirm("Do you want to delete the movie?");
 
     if (res) {
 
